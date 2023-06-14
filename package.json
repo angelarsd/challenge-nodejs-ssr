@@ -1,0 +1,12 @@
+{
+  "name": "nubi-nodejs-challenge",
+  "version": "1.0.0",
+  "description": "Nubi NodeJS Challenge",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "data": "node ./bin/generate-data.js",
+    "start": "node ./src/index.js"
+  },
+  "license": "UNLICENSED"
+}
