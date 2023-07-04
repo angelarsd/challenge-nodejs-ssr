@@ -24,6 +24,8 @@ La única dependencia de código para este desafío es NodeJS. Aparte del IDE de
 - un readme detallado con las instrucciones para ejecutarlo
 - Un endpoint para ver todos los usuarios
 - Un endpoint para crear un nuevo usuario
+- Un endpoint para eliminar un usuario
+- Un endpoint para modificar un usuario
 - Dockerfile y docker-compose que permita levantar la API ejecutando "docker-compose up" con todo lo necesario.
 
 
