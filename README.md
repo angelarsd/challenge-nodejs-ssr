@@ -15,7 +15,7 @@ Si necesitas generar nuevos usuarios puedes usar el comando `npm run data`.
 
 &nbsp;
 ## Requerimientos
-La única dependencia de código para este desafío es NodeJS. Aparte del IDE de su elección, no debería necesitar ningúna dependencia adicional para completar este challenge.
+Este challenge esta pensado para que pueda resolverse sin alguna libreria/dependencia particular, dejamos que puedas usar la tecnologia creas conveniente para la resolucion del mismo.
 
 
 &nbsp;
