@@ -15,7 +15,7 @@ Si necesitas generar nuevos usuarios puedes usar el comando `npm run data`.
 
 &nbsp;
 ## Requerimientos
-Este challenge esta pensado para que pueda resolverse sin alguna libreria/dependencia particular, dejamos que puedas usar la tecnologia creas conveniente para la resolucion del mismo.
+Este challenge esta pensado para que pueda resolverse sin alguna libreria/dependencia particular, dejamos que puedas usar la tecnologia que creas conveniente para la resolucion del mismo.
 
 
 &nbsp;
