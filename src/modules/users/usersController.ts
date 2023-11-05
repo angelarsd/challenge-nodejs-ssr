@@ -12,6 +12,14 @@ const usersController = {
     const result = parseUsersResponse(userService.getAllUsers(), query);
     return res.json(result);
   },
+  getUserById: (req: Request, res: Response) => {
+    const { id } = req.params;
+    const user = userService.getUserById(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    return res.json(user);
+  },
 };
 
 export default usersController;
