@@ -33,27 +33,21 @@ const schemeUser = {
       }),
   ],
   createUser: [
-    body("wallet_id")
-      .isUUID(4)
-      .withMessage("The wallet_id field must be a valid UUID"),
-    body("email")
-      .isEmail()
-      .withMessage("The email field must be a valid email address"),
-    body("name").isString().withMessage("The name field must be a string"),
-    body("last_name")
-      .isString()
-      .withMessage("The last_name field must be a string"),
+    body("wallet_id").isUUID(4).withMessage("Invalid page value"),
+    body("email").isEmail().withMessage("Invalid email value"),
+    body("name").isString().withMessage("Invalid name value"),
+    body("last_name").isString().withMessage("Invalid last_name value"),
     body("sex_type")
       .isIn(["male", "female"])
-      .withMessage("The sex_type field must be 'male' or 'female'"),
+      .withMessage("Invalid sex_type value must be 'male' or 'female'"),
     body("dni")
       .isString()
-      .withMessage("The dni field must be a numeric string")
+      .withMessage("Invalid dni value must be a numeric string")
       .matches(/^\d+$/)
-      .withMessage("The dni field must be a numeric string"),
+      .withMessage("Invalid dni value must be a numeric string"),
     body("birth_date")
       .isISO8601()
-      .withMessage("The birth_date field must be a date valid"),
+      .withMessage("Invalid dni value must be a date valid"),
   ],
 };
 
