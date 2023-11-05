@@ -1128,5 +1128,15 @@
     "dni": "12345677",
     "birth_date": "1985",
     "created_at": "2023-11-05T03:08:15.705Z"
+  },
+  {
+    "wallet_id": "98917d00-9c5b-4642-abf5-5b7c99c7c288",
+    "email": "angel.arsd@gmail.com",
+    "name": "Angel",
+    "last_name": "Silva",
+    "sex_type": "male",
+    "dni": "12345677",
+    "birth_date": "1985-04-10T00:00:00.000",
+    "created_at": "2023-11-05T03:28:26.069Z"
   }
 ]
