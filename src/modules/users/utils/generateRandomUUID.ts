@@ -1,4 +1,11 @@
-export function generateRandomUUID() {
+/**
+ * Generates a random UUID (Universally Unique Identifier) in string format.
+ *
+ * @returns {string} A randomly generated UUID in the format "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".
+ * - x represents a hexadecimal digit (0-9, a-f).
+ * - y represents a hexadecimal digit that is one of (8, 9, a, or b).
+ */
+export function generateRandomUUID(): string {
   const hexChars = "0123456789abcdef";
   let uuid = "";
 

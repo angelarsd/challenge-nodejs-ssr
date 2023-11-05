@@ -7,6 +7,13 @@ import { parseFilterUsersByMatch } from "./parseFilterUsersByMatch";
 import { parsePaginateUsers } from "./parsePaginateUsers";
 import { parseSortUsers } from "./parseSortUsers";
 
+/**
+ * Parses and prepares a response containing paginated, filtered, and sorted user data.
+ *
+ * @param {UserResponseDto[]} users - An array of user objects to process.
+ * @param {QueryStringsType} queryStrings - An object containing query parameters for filtering, sorting, and pagination.
+ * @returns {PaginationResponse<UserResponseDto[]>} A response object with paginated and processed user data.
+ */
 export function parseUsersResponse(
   users: UserResponseDto[],
   { page, limit, sortBy, sortDirection, match }: QueryStringsType
