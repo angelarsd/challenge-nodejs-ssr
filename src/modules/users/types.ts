@@ -3,7 +3,7 @@ export type UserResponseDto = {
   email: string;
   name: string;
   last_name: string;
-  sex_type: string;
+  sex_type: "male" | "female";
   dni: string;
   birth_date: string;
   created_at: string;
@@ -52,3 +52,5 @@ export type PaginationResponse<TResults> = {
     sortDirection: SortDirectionType;
   };
 };
+
+export type UserCreateRequestDto = Omit<UserResponseDto, "create_at">;
