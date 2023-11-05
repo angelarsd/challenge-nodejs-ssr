@@ -1,6 +1,7 @@
 import fs from "fs";
 import usersData from "../../../data/users.json";
 import { UserResponseDto } from "./types";
+import { generateRandomUUID } from "./utils";
 
 const userService = {
   getAllUsers: (): UserResponseDto[] => {
@@ -15,6 +16,7 @@ const userService = {
     const currentFormattedDate = currentDate.toISOString();
     const newUserObj = {
       ...user,
+      wallet_id: generateRandomUUID(),
       created_at: currentFormattedDate,
     };
 
@@ -27,8 +29,32 @@ const userService = {
       });
       return newUserObj;
     } catch (_error) {
-      console.error(_error);
-      return false;
+      return undefined;
+    }
+  },
+  updateUser: (id: string, user: UserResponseDto) => {
+    const fileName = "./data/users.json";
+    let updatedUser = user;
+    try {
+      fs.readFile(fileName, "utf8", (_err, data) => {
+        const existingData = JSON.parse(data);
+        const userIndex = existingData.findIndex(
+          (user: UserResponseDto) => user.wallet_id === id
+        );
+        if (userIndex === -1) {
+          return false;
+        }
+        updatedUser = {
+          ...existingData[userIndex],
+          ...user,
+        };
+        existingData[userIndex] = updatedUser;
+        const updatedData = JSON.stringify(existingData, null, 2);
+        fs.writeFile(fileName, updatedData, () => null);
+      });
+      return updatedUser;
+    } catch (_error) {
+      return undefined;
     }
   },
 };

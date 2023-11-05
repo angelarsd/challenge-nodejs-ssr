@@ -33,7 +33,6 @@ const schemeUser = {
       }),
   ],
   createUser: [
-    body("wallet_id").isUUID(4).withMessage("Invalid page value"),
     body("email").isEmail().withMessage("Invalid email value"),
     body("name").isString().withMessage("Invalid name value"),
     body("last_name").isString().withMessage("Invalid last_name value"),
@@ -46,6 +45,28 @@ const schemeUser = {
       .matches(/^\d+$/)
       .withMessage("Invalid dni value must be a numeric string"),
     body("birth_date")
+      .isISO8601()
+      .withMessage("Invalid dni value must be a date valid"),
+  ],
+  updateUser: [
+    body("email").optional().isEmail().withMessage("Invalid email value"),
+    body("name").optional().isString().withMessage("Invalid name value"),
+    body("last_name")
+      .optional()
+      .isString()
+      .withMessage("Invalid last_name value"),
+    body("sex_type")
+      .optional()
+      .isIn(["male", "female"])
+      .withMessage("Invalid sex_type value must be 'male' or 'female'"),
+    body("dni")
+      .optional()
+      .isString()
+      .withMessage("Invalid dni value must be a numeric string")
+      .matches(/^\d+$/)
+      .withMessage("Invalid dni value must be a numeric string"),
+    body("birth_date")
+      .optional()
       .isISO8601()
       .withMessage("Invalid dni value must be a date valid"),
   ],

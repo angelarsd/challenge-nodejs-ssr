@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
 import userService from "./userService";
-import { parseQueryStrings, parseUsersResponse, validateQuery } from "./utils";
+import { parseQueryStrings, parseUsersResponse } from "./utils";
 import { validationResult } from "express-validator";
 
 const usersController = {
@@ -36,6 +36,22 @@ const usersController = {
         .json({ message: "User created", data: createdUser });
     } else {
       return res.status(500).json({ error: "User not created" });
+    }
+  },
+
+  updateUser: (req: Request, res: Response) => {
+    const { id } = req.params;
+    const user = userService.getUserById(id);
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    const updatedUser = userService.updateUser(id, req.body);
+    if (updatedUser) {
+      return res
+        .status(200)
+        .json({ message: "User updated", data: updatedUser });
+    } else {
+      return res.status(500).json({ error: "User not updated" });
     }
   },
 };
