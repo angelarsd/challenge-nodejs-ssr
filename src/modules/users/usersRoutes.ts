@@ -1,5 +1,4 @@
 import express from "express";
-import { body } from "express-validator";
 import usersController from "./usersController";
 import schemeUser from "./usersScheme";
 
