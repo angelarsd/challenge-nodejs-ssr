@@ -14,11 +14,12 @@ export function parseUsersResponse(
   let result = users;
   result = parseFilterUsersByMatch(result, match);
   result = parseSortUsers(result, sortBy, sortDirection);
-  const total = result.length;
-  result = parsePaginateUsers(result, page, limit);
 
+  const total = result.length;
   const totalPages = Math.ceil(result.length / limit);
   const nextPage = page < totalPages ? page + 1 : null;
+
+  result = parsePaginateUsers(result, page, limit);
 
   return {
     result,
