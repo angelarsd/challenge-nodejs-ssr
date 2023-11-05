@@ -57,6 +57,27 @@ const userService = {
       return undefined;
     }
   },
+
+  deleteUser: (id: string) => {
+    const fileName = "./data/users.json";
+    try {
+      fs.readFile(fileName, "utf8", (_err, data) => {
+        const existingData = JSON.parse(data);
+        const userIndex = existingData.findIndex(
+          (user: UserResponseDto) => user.wallet_id === id
+        );
+        if (userIndex === -1) {
+          return false;
+        }
+        existingData.splice(userIndex, 1);
+        const updatedData = JSON.stringify(existingData, null, 2);
+        fs.writeFile(fileName, updatedData, () => null);
+      });
+      return id;
+    } catch (_error) {
+      return undefined;
+    }
+  },
 };
 
 export default userService;
