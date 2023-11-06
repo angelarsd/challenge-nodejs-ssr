@@ -9,18 +9,27 @@ const usersController = {
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-    const query = parseQueryStrings(req);
-    const result = parseUsersResponse(userService.getAllUsers(), query);
-    return res.json(result);
+
+    userService.getAllUsers((users) => {
+      if (users) {
+        const query = parseQueryStrings(req);
+        const result = parseUsersResponse(users, query);
+        return res.json(result);
+      } else {
+        return res.status(404).json({ error: "Users not found" });
+      }
+    });
   },
 
   getUserById: (req: Request, res: Response) => {
     const { id } = req.params;
-    const user = userService.getUserById(id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    return res.json(user);
+    userService.getUserById(id, (user) => {
+      if (user) {
+        return res.json(user);
+      } else {
+        return res.status(404).json({ error: "User not found" });
+      }
+    });
   },
 
   createUser: async (req: Request, res: Response) => {
@@ -29,46 +38,50 @@ const usersController = {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const createdUser = userService.createUser(req.body);
-    if (createdUser) {
-      return res
-        .status(201)
-        .json({ message: "User created", data: createdUser });
-    } else {
-      return res.status(500).json({ error: "User not created" });
-    }
+    userService.createUser(req.body, (user) => {
+      if (user) {
+        return res.status(201).json({ message: "User created", data: user });
+      } else {
+        return res.status(500).json({ error: "User not created" });
+      }
+    });
   },
 
   updateUser: (req: Request, res: Response) => {
     const { id } = req.params;
-    const user = userService.getUserById(id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    const updatedUser = userService.updateUser(id, req.body);
-    if (updatedUser) {
-      return res
-        .status(200)
-        .json({ message: "User updated", data: updatedUser });
-    } else {
-      return res.status(500).json({ error: "User not updated" });
-    }
+    userService.getUserById(id, (user) => {
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+    });
+
+    userService.updateUser(id, req.body, (updatedUser) => {
+      if (updatedUser) {
+        return res
+          .status(200)
+          .json({ message: "User updated", data: updatedUser });
+      } else {
+        return res.status(500).json({ error: "User not updated" });
+      }
+    });
   },
 
   deleteUser: (req: Request, res: Response) => {
     const { id } = req.params;
-    const user = userService.getUserById(id);
-    if (!user) {
-      return res.status(404).json({ error: "User not found" });
-    }
-    const deletedUser = userService.deleteUser(id);
-    if (deletedUser) {
-      return res
-        .status(200)
-        .json({ message: "User deleted", data: deletedUser });
-    } else {
-      return res.status(500).json({ error: "User not deleted" });
-    }
+    userService.getUserById(id, (user) => {
+      if (!user) {
+        return res.status(404).json({ error: "User not found" });
+      }
+    });
+    userService.deleteUser(id, (deletedUser) => {
+      if (deletedUser) {
+        return res
+          .status(200)
+          .json({ message: "User deleted", data: deletedUser });
+      } else {
+        return res.status(500).json({ error: "User not deleted" });
+      }
+    });
   },
 };
 

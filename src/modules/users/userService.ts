@@ -1,17 +1,42 @@
 import fs from "fs";
-import usersData from "../../../data/users.json";
 import { UserResponseDto } from "./types";
 import { generateRandomUUID } from "./utils";
 
+const fileName = "./data/users.json";
+
 const userService = {
-  getAllUsers: (): UserResponseDto[] => {
-    return usersData as UserResponseDto[];
+  getAllUsers: (callback: (user: UserResponseDto[] | undefined) => void) => {
+    fs.readFile(fileName, "utf8", (err, data) => {
+      if (err) {
+        callback(undefined);
+        return;
+      }
+      const result = JSON.parse(data);
+      callback(result);
+    });
   },
-  getUserById: (id: string) => {
-    return usersData.find((user) => user.wallet_id === id);
+
+  getUserById: (
+    id: string,
+    callback: (user: UserResponseDto | undefined) => void
+  ) => {
+    fs.readFile(fileName, "utf8", (err, data) => {
+      if (err) {
+        callback(undefined);
+        return;
+      }
+      const existingData = JSON.parse(data);
+      const result = existingData.find(
+        (user: UserResponseDto) => user.wallet_id === id
+      );
+      callback(result);
+    });
   },
-  createUser: (user: UserResponseDto) => {
-    const fileName = "./data/users.json";
+
+  createUser: (
+    user: UserResponseDto,
+    callback: (user: UserResponseDto | undefined) => void
+  ) => {
     const currentDate = new Date();
     const currentFormattedDate = currentDate.toISOString();
     const newUserObj = {
@@ -20,63 +45,91 @@ const userService = {
       created_at: currentFormattedDate,
     };
 
-    try {
-      fs.readFile(fileName, "utf8", (_err, data) => {
-        const existingData = JSON.parse(data);
-        existingData.push(newUserObj);
-        const updatedData = JSON.stringify(existingData, null, 2);
-        fs.writeFile(fileName, updatedData, () => null);
-      });
-      return newUserObj;
-    } catch (_error) {
-      return undefined;
-    }
-  },
-  updateUser: (id: string, user: UserResponseDto) => {
-    const fileName = "./data/users.json";
-    let updatedUser = user;
-    try {
-      fs.readFile(fileName, "utf8", (_err, data) => {
-        const existingData = JSON.parse(data);
-        const userIndex = existingData.findIndex(
-          (user: UserResponseDto) => user.wallet_id === id
-        );
-        if (userIndex === -1) {
-          return false;
+    fs.readFile(fileName, "utf8", (err, data) => {
+      if (err) {
+        callback(undefined);
+        return;
+      }
+
+      const existingData = JSON.parse(data);
+      existingData.push(newUserObj);
+      const updatedData = JSON.stringify(existingData, null, 2);
+
+      fs.writeFile(fileName, updatedData, (writeErr) => {
+        if (writeErr) {
+          callback(undefined);
+        } else {
+          callback(newUserObj);
         }
-        updatedUser = {
-          ...existingData[userIndex],
-          ...user,
-        };
-        existingData[userIndex] = updatedUser;
-        const updatedData = JSON.stringify(existingData, null, 2);
-        fs.writeFile(fileName, updatedData, () => null);
       });
-      return updatedUser;
-    } catch (_error) {
-      return undefined;
-    }
+    });
   },
 
-  deleteUser: (id: string) => {
-    const fileName = "./data/users.json";
-    try {
-      fs.readFile(fileName, "utf8", (_err, data) => {
-        const existingData = JSON.parse(data);
-        const userIndex = existingData.findIndex(
-          (user: UserResponseDto) => user.wallet_id === id
-        );
-        if (userIndex === -1) {
-          return false;
+  updateUser: (
+    id: string,
+    user: UserResponseDto,
+    callback: (user: UserResponseDto | undefined) => void
+  ) => {
+    fs.readFile(fileName, "utf8", (err, data) => {
+      if (err) {
+        return callback(undefined);
+      }
+
+      const existingData = JSON.parse(data);
+      const userIndex = existingData.findIndex(
+        (userData: UserResponseDto) => userData.wallet_id === id
+      );
+
+      if (userIndex === -1) {
+        return callback(undefined);
+      }
+
+      const updatedUser = {
+        ...existingData[userIndex],
+        ...user,
+      };
+
+      existingData[userIndex] = updatedUser;
+
+      const updatedData = JSON.stringify(existingData, null, 2);
+
+      fs.writeFile(fileName, updatedData, (writeErr) => {
+        if (writeErr) {
+          return callback(undefined);
         }
-        existingData.splice(userIndex, 1);
-        const updatedData = JSON.stringify(existingData, null, 2);
-        fs.writeFile(fileName, updatedData, () => null);
+
+        return callback(updatedUser);
       });
-      return id;
-    } catch (_error) {
-      return undefined;
-    }
+    });
+  },
+
+  deleteUser: (id: string, callback: (id: string | undefined) => void) => {
+    fs.readFile(fileName, "utf8", (err, data) => {
+      if (err) {
+        return callback(undefined);
+      }
+
+      const existingData = JSON.parse(data);
+      const userIndex = existingData.findIndex(
+        (userData: { wallet_id: string }) => userData.wallet_id === id
+      );
+
+      if (userIndex === -1) {
+        return callback(undefined);
+      }
+
+      existingData.splice(userIndex, 1);
+
+      const updatedData = JSON.stringify(existingData, null, 2);
+
+      fs.writeFile(fileName, updatedData, (writeErr) => {
+        if (writeErr) {
+          return callback(undefined);
+        }
+
+        return callback(id);
+      });
+    });
   },
 };
 
