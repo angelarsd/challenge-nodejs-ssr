@@ -43,7 +43,7 @@ describe("WHEN parseUsersResponse is called", () => {
     expect(result.pagination.nextPage).toBe(2);
   });
 
-  it.only("SHOULD use default values when query strings are missing", () => {
+  it("SHOULD use default values when query strings are missing", () => {
     const query: QueryStringsType = {
       page: 1,
       limit: 20,
