@@ -1,8 +1,7 @@
-version: "3"
+version: '3.0'
 services:
-  api:
-    build: .
+  app:
+    container_name: app
+    build: ./
     ports:
-      - "3000:3000"
-    volumes:
-      - .:/app
+      - 3000:3000

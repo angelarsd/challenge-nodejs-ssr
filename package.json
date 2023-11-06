@@ -6,7 +6,7 @@
   "type": "commonjs",
   "scripts": {
     "data": "node ./bin/generate-data.js",
-    "start": "node dist/src/index.js",
+    "start": "node build/src/index.js",
     "build": "tsc",
     "dev": "nodemon --exec ts-node --transpileOnly src/index.ts",
     "test": "jest"
